@@ -1,13 +1,32 @@
 #!/bin/bash
 
+################################################################################
+# Script that warns i3wm users when the battery is low                         #
+#                                                                              #
+# Default Notification Thresholds:		                               #
+# 1) First Notification: 20%						       #
+# 2) Second Notification: 10%						       #
+#                                                                              #
+# Options:				                                       #
+#                                                                              #
+# -T : The battery value at which the first notification is sent	       #
+#                                                                              #
+# -t : The battery value at which the second notification is sent	       #
+#                                                                              #
+# -i : The path of the alert icon					       #
+#                                                                              #
+#                                                                              #
+# By Mohammed Ayman (Oppikn), 2022                                             #
+################################################################################
+
 threshold_1=20
 threshold_2=10
 icon_path=
 
-while getopts v:t:i: aflag; do
+while getopts T:t:i: aflag; do
 	case $aflag in
-		t) threshold_1=$OPTARG;;
-		v) threshold_2=$OPTARG;;
+		T) threshold_1=$OPTARG;;
+		t) threshold_2=$OPTARG;;
 		i) icon_path=$OPTARG;;
 	esac
 done
