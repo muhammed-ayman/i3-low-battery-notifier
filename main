@@ -1,0 +1,47 @@
+#!/bin/bash
+
+threshold_1=20
+threshold_2=10
+icon_path=
+
+while getopts v:t:i: aflag; do
+	case $aflag in
+		t) threshold_1=$OPTARG;;
+		v) threshold_2=$OPTARG;;
+		i) icon_path=$OPTARG;;
+	esac
+done
+
+# Checks wether battery is charging
+isBatteryCharging() {
+	battery_status="$(cat /sys/class/power_supply/BAT0/status)"
+	if [ "$battery_status" == "Charging" ]; then  
+	   true
+	else
+  	   false
+	fi
+}
+
+# Returns battery capacity
+getBatteryCapacity() {
+	echo $(cat /sys/class/power_supply/BAT0/capacity)
+}
+
+# Sends low battery alert notification
+notifyLowBattery() {
+	notify-send "Low Battery Alert!" "Your Battery Level is $(getBatteryCapacity)" --icon="$icon_path"
+}
+
+# Checks wether battery is low
+isBatteryLow() {
+	battery_capacity=$(getBatteryCapacity)
+	if (( $battery_capacity <= $threshold_1 || $battery_capacity <= $threshold_2 )); then
+	    true
+	else
+	   false
+	fi
+}
+
+if isBatteryLow && !(isBatteryCharging); then
+notifyLowBattery
+fi
