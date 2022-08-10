@@ -19,15 +19,30 @@
 # By Mohammed Ayman (Oppikn), 2022                                             #
 ################################################################################
 
+USAGE="$(basename "$0") [-h] [-T t i] -- Script that warns i3wm users when the battery is low.
+
+where:
+    -h  show help text
+    -T  the battery percentage at which the first warning is sent
+    -t  the battery percentage at which the second warning is sent
+    -i  the path of the alert icon"
+
 threshold_1=20
 threshold_2=10
 icon_path=
 
-while getopts T:t:i: aflag; do
-	case $aflag in
+while getopts ':T:t:i:h' option; do
+	case $option in
 		T) threshold_1=$OPTARG;;
 		t) threshold_2=$OPTARG;;
 		i) icon_path=$OPTARG;;
+		h)
+		   echo "$USAGE"
+		   exit;;
+		\?)
+		   printf "Invalid option: -%s\n" "$OPTARG" >&2
+		   echo "$USAGE" >&2
+		   exit 1;;
 	esac
 done
 
@@ -48,7 +63,7 @@ getBatteryCapacity() {
 
 # Sends low battery alert notification
 notifyLowBattery() {
-	notify-send "Low Battery Alert!" "Your Battery Level is $(getBatteryCapacity)" --icon="$icon_path"
+	notify-send "Low Battery Alert!" "Your Battery Level is $(getBatteryCapacity)%" --icon="$icon_path"
 }
 
 # Checks wether battery is low
