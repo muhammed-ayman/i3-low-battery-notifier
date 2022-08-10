@@ -6,7 +6,7 @@ The script checks the battery percentage & status on a regular basis and determi
 
 # How to use?
 
-- Clone the script and add it to your `PATH Variables`
+- Clone the script and add it to your `PATH Variable`
 - Call it with your own customization in the i3wm config: `exec --no-startup-id i3-low-battery-notifier`
 
 ## Options
