@@ -9,6 +9,8 @@
 #                                                                              #
 # Options:				                                       #
 #                                                                              #
+# -h : Display the help info						       #
+#                                                                              #
 # -T : The battery value at which the first notification is sent	       #
 #                                                                              #
 # -t : The battery value at which the second notification is sent	       #
@@ -80,20 +82,26 @@ isBatteryLow() {
 
 # Checks whether a notification should be sent
 isNotify() {
-	if (( $battery_capacity <= $THRESHOLD1 && $WARNINGS_COUNT == 0)); then	
+	if (( $battery_capacity <= $THRESHOLD2 && $WARNINGS_COUNT < 2)); then	
+	    WARNINGS_COUNT=1
 	    true
-	elif (( $battery_capacity <= $THRESHOLD2 && $WARNINGS_COUNT == 1)); then
+	elif (( $battery_capacity <= $THRESHOLD1 && $WARNINGS_COUNT == 0)); then
 	    true
 	else
 	    false
 	fi
 }
 
+# Reset warnings counter upon plugging the charger
+resetWarningsCounter() {
+	    if isBatteryCharging; then
+	        WARNINGS_COUNT=0
+	    fi
+}
+
 main() {
 	while true; do
-	    if isBatteryCharging; then
-		WARNINGS_COUNT=0
-	    fi
+	    resetWarningsCounter
 	    if isBatteryLow && !(isBatteryCharging) && isNotify; then
 	        notifyLowBattery
 		((WARNINGS_COUNT+=1))
