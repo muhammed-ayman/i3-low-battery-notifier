@@ -3,19 +3,19 @@
 ################################################################################
 # Script that warns i3wm users when the battery is low                         #
 #                                                                              #
-# Default Notification Thresholds:		                               #
-# 1) First Notification: 20%						       #
-# 2) Second Notification: 10%						       #
+# Default Notification Threshold:                                              #
+# 1) First Notification: 20%                                                   #
+# 2) Second Notification: 10%                                                  #
 #                                                                              #
-# Options:				                                       #
+# Options:                                                                     #
 #                                                                              #
-# -h : Display the help info						       #
+# -h : Display the help info                                                   #
 #                                                                              #
-# -T : The battery value at which the first notification is sent	       #
+# -T : The battery value at which the first notification is sent               #
 #                                                                              #
-# -t : The battery value at which the second notification is sent	       #
+# -t : The battery value at which the second notification is sent              #
 #                                                                              #
-# -i : The path of the alert icon					       #
+# -i : The path of the alert icon                                              #
 #                                                                              #
 #                                                                              #
 # By Mohammed Ayman (Oppikn), 2022                                             #
