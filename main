@@ -68,7 +68,7 @@ notifyLowBattery() {
 	notify-send "Low Battery Alert!" "Your Battery Level is $(getBatteryCapacity)%" --icon="$icon_path"
 }
 
-# Checks wether battery is low
+# Checks whether battery is low
 isBatteryLow() {
 	battery_capacity=$(getBatteryCapacity)
 	if (( $battery_capacity <= $THRESHOLD1 || $battery_capacity <= $THRESHOLD2 )); then
@@ -78,13 +78,23 @@ isBatteryLow() {
 	fi
 }
 
+# Checks whether a notification should be sent
+isNotify() {
+	if (( $battery_capacity <= $THRESHOLD1 && $WARNINGS_COUNT == 0)); then	
+	    true
+	elif (( $battery_capacity <= $THRESHOLD2 && $WARNINGS_COUNT == 1)); then
+	    true
+	else
+	    false
+	fi
+}
+
 main() {
 	while true; do
 	    if isBatteryCharging; then
 		WARNINGS_COUNT=0
 	    fi
-	    echo "$WARNINGS_COUNT"
-	    if isBatteryLow && !(isBatteryCharging) && [[ $WARNINGS_COUNT -lt 2 ]]; then
+	    if isBatteryLow && !(isBatteryCharging) && isNotify; then
 	        notifyLowBattery
 		((WARNINGS_COUNT+=1))
 	    fi
